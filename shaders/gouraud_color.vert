@@ -20,4 +20,7 @@ out vec3 specular;
 
 void main() {
     gl_Position = projection_matrix * view_matrix * model_matrix * vec4(vertex_position, 1.0);
+    ambient = light_ambient;
+    diffuse = light_color * dot(vertex_normal, normalize(vertex_position - light_position));
+    specular = light_color * pow( dot(normalize((2.0*dot(vertex_normal, normalize(vertex_position - light_position))*vertex_normal)-normalize(vertex_position - light_position)), normalize(vertex_position - camera_position)), material_shininess) ;
 }
