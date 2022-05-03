@@ -172,7 +172,7 @@ class GlApp {
             //shader to material
             this.gl.uniform3fv(this.shader[selected_shader].uniforms.material_color, this.scene.models[i].material.color);
             this.gl.uniform3fv(this.shader[selected_shader].uniforms.material_specular, this.scene.models[i].material.specular);
-            // this.gl.uniform1fv(this.shader[selected_shader].uniforms.material_shininess, this.scene.models[i].material.shininess);
+            this.gl.uniform1f(this.shader[selected_shader].uniforms.material_shininess, this.scene.models[i].material.shininess);
 
             this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_ambient, this.scene.light.ambient);
             this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_position, this.scene.light.point_lights[0].position);
@@ -189,7 +189,7 @@ class GlApp {
             //
             // TODO: bind proper texture and set uniform (if shader is a textured one)
             //
-
+            
             this.gl.bindVertexArray(this.vertex_array[this.scene.models[i].type]);
             this.gl.drawElements(this.gl.TRIANGLES, this.vertex_array[this.scene.models[i].type].face_index_count, this.gl.UNSIGNED_SHORT, 0);
             this.gl.bindVertexArray(null);
