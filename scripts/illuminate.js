@@ -158,7 +158,14 @@ class GlApp {
             //
             // TODO: properly select shader here
             //
-            let selected_shader = 'gouraud_color';
+            let selected_shader;
+            selected_shader = 'gouraud_color';
+            // if(this.canvas. = 'gouraud'){
+            //     selected_shader = 'gouraud_color';
+            // } else{
+            //     selected_shader = 'phong_color';
+            // }
+
             this.gl.useProgram(this.shader[selected_shader].program);
 
             // transform model to proper position, size, and orientation
@@ -189,7 +196,7 @@ class GlApp {
             //
             // TODO: bind proper texture and set uniform (if shader is a textured one)
             //
-            
+            this.gl.uniformMatrix4fv(this.shader[selected_shader].)
             this.gl.bindVertexArray(this.vertex_array[this.scene.models[i].type]);
             this.gl.drawElements(this.gl.TRIANGLES, this.vertex_array[this.scene.models[i].type].face_index_count, this.gl.UNSIGNED_SHORT, 0);
             this.gl.bindVertexArray(null);
