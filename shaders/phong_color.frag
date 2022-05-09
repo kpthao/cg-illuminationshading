@@ -18,12 +18,13 @@ out vec4 FragColor;
 void main() {
     vec3 ambient = light_ambient * material_color;
     vec3 light_vector = normalize(light_position-frag_pos);
-    vec3 diffuse = light_color * material_color * dot(frag_normal, light_vector);
+    vec3 diffuse = light_color * material_color * max(dot(frag_normal, light_vector), 0.0);
     
     vec3 view = normalize(camera_position - frag_pos);
-    // vec3 rdotv = dot(normalize(2.0*dot(frag_normal, light_vector)*frag_normal)-light_vector, view);
-    // vec3 specular = light_color * material_specular * pow(rdotv, material_shininess);
 
-    vec3 specular = light_color * pow(dot(normalize((2.0*dot(frag_normal, normalize(light_position - frag_pos))*frag_normal)-normalize(light_position - frag_pos)), normalize(camera_position - frag_pos)), material_shininess) ;
+    vec3 R = reflect(-light_vector, frag_normal);
+    float specularCalc = max(dot(R, view), 0.0);
+
+    vec3 specular = light_color * pow(specularCalc, material_shininess);
     FragColor = vec4(ambient + diffuse + specular, 1.0);
 }

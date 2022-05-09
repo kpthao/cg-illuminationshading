@@ -18,7 +18,7 @@ void main() {
     vec3 ambient_light = ambient * material_color;
     vec3 diffuse_light = diffuse * material_color;
     vec3 specular_light = specular * material_specular;
-    vec3 result = ambient_light + diffuse_light + specular_light; //formula in notes
+    vec4 result = vec4((ambient_light + diffuse_light + specular_light), 1.0); //formula in notes
 
-    FragColor = vec4(result, 1.0);
+    FragColor = texture * result;
 }
