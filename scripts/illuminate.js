@@ -124,11 +124,10 @@ class GlApp {
     initializeTexture(image_url) {
         // create a texture, and upload a temporary 1px white RGBA array [255,255,255,255]
         let texture = this.gl.createTexture();
-
-        //
-        // TODO: set texture parameters and upload a temporary 1px white RGBA array [255,255,255,255]
-        // 
-
+        //BEGINNING OF UPDATED CODE
+        this.gl.bindTexture(this.gl.TEXTURE_2D, texture);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, 1, 1, 0, this.gl.RGBA, this.gl.UNSIGNED_BYTE, new Uint8Array([255,255,255,255]));
+        //END OF UPDATED CODE
         // download the actual image
         let image = new Image();
         image.crossOrigin = 'anonymous';
@@ -142,9 +141,11 @@ class GlApp {
     }
 
     updateTexture(texture, image_element) {
-        //
-        // TODO: update image for specified texture
-        //
+        //BEGINNING OF UPDATED CODE
+        this.gl.bindTexture(this.gl_TEXTURE_2D, texture);
+        this.gl.texImage2D(this.gl.TEXTURE_2D, 0, this.gl.RGBA, this.gl.RGBA, this.gl.UNSIGNED_BYTE, image_element);
+        this.gl.generateMipmap(this.gl.TEXTURE_2D);
+        //END OF UPDATED CODE
     }
 
     render() {
@@ -154,10 +155,7 @@ class GlApp {
         // draw all models
         for (let i = 0; i < this.scene.models.length; i ++) {
             if (this.vertex_array[this.scene.models[i].type] == null) continue;
-            
-            //
-            // TODO: properly select shader here
-            //
+
             let selected_shader;
             selected_shader;
             if(this.scene.models[i].shader == 'color'){
@@ -173,6 +171,7 @@ class GlApp {
                     selected_shader = 'phong_texture';
                 }
             }
+
             console.log(selected_shader);
 
             this.gl.useProgram(this.shader[selected_shader].program);
@@ -194,6 +193,22 @@ class GlApp {
             this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_position, this.scene.light.point_lights[0].position);
             this.gl.uniform3fv(this.shader[selected_shader].uniforms.light_color, this.scene.light.point_lights[0].color);
 
+            // let point_light_positions = new Float32Array(this.scene.light.point_lights.length*3);
+            // let point_light_colors = new Float32Array(this.scene.light.point_lights.length*3);
+            // for(let j = 0; j < this.scene.light.point_lights.length; j++){
+            //     point_light_positions[j*3] = this.scene.light.point_lights[j].position[0];
+            //     point_light_positions[j*3 + 1] = this.scene.light.point_lights[j].position[1];
+            //     point_light_positions[j*3 + 2] = this.scene.light.point_lights[j].position[2];
+
+            //     point_light_colors[j*3] = this.scene.light.point_lights[j].color[0];
+            //     point_light_colors[j*3 + 1] = this.scene.light.point_lights[j].color[1];
+            //     point_light_colors[j*3 + 2] = this.scene.light.point_lights[j].color[2];
+            // }
+            // console.log(point_light_colors);
+            // console.log(point_light_positions);
+            // this.gl.uniform3fv(this.shader[selected_shader].uniforms['light_position[0]'], point_light_positions);
+            // this.gl.uniform3fv(this.shader[selected_shader].uniforms['light_color[0]'], point_light_colors);
+
             this.gl.uniform3fv(this.shader[selected_shader].uniforms.camera_position, this.scene.camera.position);  
             this.gl.uniform3fv(this.shader[selected_shader].uniforms.camera_target, this.scene.camera.target); 
             this.gl.uniform3fv(this.shader[selected_shader].uniforms.camera_up, this.scene.camera.up);
@@ -205,8 +220,20 @@ class GlApp {
             //
             // TODO: bind proper texture and set uniform (if shader is a textured one)
             //
+            // if(selected_shader == 'gouraud_texture' || selected_shader == 'phong_texture'){
+            //     console.log("This is a test for selected Shader");
+            //     this.gl.uniform2fv(this.shader[selected_shader].uniforms.texture_scale, this.scene.models[i].texture.scale);
+            //     this.gl.activeTexture(this.gl.TEXTURE0);
+            //     this.gl.bindTexture(this.gl.TEXTURE_2D, this.scene.models[i].texture.id);
+            //     if(this.scene.models[i].texture.url == 'images/Checkered.jpg'){
+            //         let texture = this.initializeTexture(this.getFile('images/Checkered.jpg'));
+            //         this.gl.uniform1i(this.shader[selected_shader].uniforms.image, texture);
+            //     }else{
+            //         let texture = this.initializeTexture(this.getFile('images/World_Map.jpg'));
+            //         this.gl.uniform1i(this.shader[selected_shader].uniforms.image, texture);
+            //     }
+            // }
 
-            // this.gl.uniformMatrix4fv(this.shader[selected_shader].)
             this.gl.bindVertexArray(this.vertex_array[this.scene.models[i].type]);
             this.gl.drawElements(this.gl.TRIANGLES, this.vertex_array[this.scene.models[i].type].face_index_count, this.gl.UNSIGNED_SHORT, 0);
             this.gl.bindVertexArray(null);
