@@ -36,9 +36,9 @@ function init() {
                         },
                         center: vec3.fromValues(0.0, 1.0, -6.0), // x, y, z
                         size: vec3.fromValues(2.0, 2.0, 2.0),  // width, height, depth
-                        rotate_x: 0.5,
-                        rotate_y: .5,
-                        rotate_z: .5
+                        rotate_x: 0,
+                        rotate_y: 0,
+                        rotate_z: 0
                     }
                 ],
                 light: {
